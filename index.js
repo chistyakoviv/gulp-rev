@@ -113,6 +113,8 @@ const plugin = () => {
 	});
 };
 
+let manifestStorage = {};
+
 plugin.manifest = (path_, options) => {
 	if (typeof path_ === 'string') {
 		path_ = {path: path_};
@@ -162,7 +164,9 @@ plugin.manifest = (path_, options) => {
 					manifest = Object.assign(oldManifest, manifest);
 				}
 
-				manifestFile.contents = Buffer.from(options.transformer.stringify(sortKeys(manifest), undefined, '  '));
+				manifestStorage = Object.assign(manifestStorage, manifest);
+
+				manifestFile.contents = Buffer.from(options.transformer.stringify(sortKeys(manifestStorage), undefined, '  '));
 				this.push(manifestFile);
 				callback();
 			} catch (error) {
